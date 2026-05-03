@@ -7,33 +7,40 @@ By day, a Senior Software Engineer with 18 years building production systems acr
 ### 🤖 Marvin — a self-improving multi-agent system for bank credit decisioning
 🌐 [marvinos.uk](https://marvinos.uk/) — A bank credit committee, modeled in software: **8 agents across 3 departments**, each with one responsibility and a strict document allowlist.
 
-```mermaid
-flowchart TB
-    subgraph A["🏭 Dept A — Credit Factory (live, ≤60s/application)"]
-        CG[Compliance Guardian]
-        UW[Underwriter]
-        DQ[Data Quant]
-        IA[(Internal Archivist · RAG)]
-        OR{{Orchestrator · Law &gt; Policy &gt; Data}}
-        CG --> OR
-        UW --> OR
-        DQ --> OR
-        IA -. cites .-> CG
-        IA -. cites .-> UW
-        IA -. cites .-> DQ
-    end
-    subgraph B["🧠 Dept B — Strategy & Development"]
-        ES[External Scout<br/>EBA · BNB · ECB · textbooks]
-        PA[Policy Architect]
-        ES --> PA
-    end
-    subgraph C["👁 Dept C — Evolution"]
-        MV([Marvin · Meta-Architect])
-    end
-    OR ==> V[/"Explainable verdict + HITL flag"/]
-    PA -. drafts policies .-> IA
-    MV -. watches .-> A
-    MV -. watches .-> B
+```
+DEPT A — Credit Factory (live, ≤60s/application)
+
+         Application
+              ↓
+     Compliance Guardian       ← runs first; AML / KYC / sanctions / PEPs
+              ↓
+     hard-reject? ─────→ short-circuit: REJECT, end
+              ↓ no
+          ┌───┴───┐
+          ↓       ↓
+     Underwriter  Data Quant   ← parallel; cite via Archivist (RAG)
+          │       │
+          └───┬───┘
+              ↓
+       Orchestrator             ← Law > Policy > Data conflict tree
+              ↓
+   Final verdict + HITL flag    ← APPROVE / REJECT / REVIEW
+
+
+DEPT B — Strategy & Development (async)
+
+     External Scout             ← EBA / BNB / ECB / textbooks /
+              ↓                   working papers
+     Policy Architect ──drafts──→ ingested into Archivist's corpus
+                                  on operator sign-off
+
+
+DEPT C — Evolution (god mode)
+
+     Marvin · Meta-Architect    ← watches all 7 other agents →
+                                  bottlenecks, hallucinations,
+                                  prompt drift, knowledge gaps
+                                  (read-only; surfaces findings)
 ```
 
 - **Dept A — Credit Factory (live, ≤60s).** Compliance, Underwriter, and Quant feed an Orchestrator that applies a `Law > Policy > Data` conflict tree; the Archivist provides RAG citations.
@@ -41,6 +48,7 @@ flowchart TB
 - **Dept C — Evolution.** **Marvin** — the meta-architect the product is named after — watches the other seven for bottlenecks, hallucinations, and prompt drift.
 
 Explainable by construction, auditable end-to-end, self-improving.
+
 
 
 ### 📚 Money OS — a platform and course for beginners
