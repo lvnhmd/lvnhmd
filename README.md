@@ -2,16 +2,46 @@
 
 I'm focused on building **useful, trustworthy AI systems** — multi-agent architectures for regulated domains, explainable by construction and auditable end-to-end. That's the work I want to keep moving forward.
 
-By day, Senior Software Engineer at Times Higher Education. Before that, 18 years across the BBC, Samsung, FIFA's official World Cup app, Nando's, and the UK Ministry of Justice. Outside of full-time work, I'm building two things:
+By day, a Senior Software Engineer with 18 years building production systems across finance, media, gov, and retail. By night, I'm building two things:
 
 ### 🤖 Marvin — a self-improving multi-agent system for bank credit decisioning
-🌐 [marvinos.uk](https://marvinos.uk/) — Marvin is a real bank credit committee, modeled in software. **Eight specialised agents** organised into **three departments**, each with strict document allowlists and a single responsibility:
+🌐 [marvinos.uk](https://marvinos.uk/) — A bank credit committee, modeled in software: **8 agents across 3 departments**, each with one responsibility and a strict document allowlist.
 
-- **Department A — Credit Factory (live execution).** Runs synchronously per application, ≤ 60s wall-clock end-to-end. A **Compliance Guardian** screens AML / KYC / sanctions / PEPs and can hard-reject. An **Underwriter** structures the deal and looks for compensating factors. A **Data Quant** runs DSTI, DSCR, scoring, and default probability against methodology thresholds. An **Internal Archivist** is the RAG layer — every other agent queries it for citations, never freelances. An **Orchestrator** chairs the committee, applies a `Law > Policy > Data` conflict tree, and emits an explainable verdict with a HITL flag.
-- **Department B — Strategy & Development (brain trust).** An **External Scout** monitors EBA guidelines, BNB наредби, Държавен вестник, ECB / BIS / IMF publications, and open-access textbooks. A **Policy Architect** drafts new internal policies (or rewrites old ones) for operator sign-off, triggered by Scout findings or by the Orchestrator flagging a missing rule.
-- **Department C — Evolution (god mode).** **Marvin** itself — the meta-architect the product is named after — watches the other seven agents, reads traces, latency, conflict rates, and hallucination flags, and surfaces system-level findings: bottlenecks, knowledge gaps, prompt drift, draft prompts for entirely new agents.
+```mermaid
+flowchart TB
+    subgraph A["🏭 Dept A — Credit Factory (live, ≤60s/application)"]
+        CG[Compliance Guardian]
+        UW[Underwriter]
+        DQ[Data Quant]
+        IA[(Internal Archivist · RAG)]
+        OR{{Orchestrator · Law &gt; Policy &gt; Data}}
+        CG --> OR
+        UW --> OR
+        DQ --> OR
+        IA -. cites .-> CG
+        IA -. cites .-> UW
+        IA -. cites .-> DQ
+    end
+    subgraph B["🧠 Dept B — Strategy & Development"]
+        ES[External Scout<br/>EBA · BNB · ECB · textbooks]
+        PA[Policy Architect]
+        ES --> PA
+    end
+    subgraph C["👁 Dept C — Evolution"]
+        MV([Marvin · Meta-Architect])
+    end
+    OR ==> V[/"Explainable verdict + HITL flag"/]
+    PA -. drafts policies .-> IA
+    MV -. watches .-> A
+    MV -. watches .-> B
+```
 
-The whole system is designed to be **explainable by construction, auditable end-to-end, and self-improving** — the policy library stays current, and the agent roster gets challenged by an agent whose only job is to challenge it. This is where most of my AI engineering effort goes: agent contracts, RAG with strict allowlists, structured output, streaming, evaluation against real loan datasets, and the un-glamorous work of making AI systems give answers that hold up in a regulated domain where being wrong has real financial consequences.
+- **Dept A — Credit Factory (live, ≤60s).** Compliance, Underwriter, and Quant feed an Orchestrator that applies a `Law > Policy > Data` conflict tree; the Archivist provides RAG citations.
+- **Dept B — Strategy & Development.** A Scout watches EBA / BNB / ECB / textbooks; a Policy Architect drafts policy updates for operator sign-off.
+- **Dept C — Evolution.** **Marvin** — the meta-architect the product is named after — watches the other seven for bottlenecks, hallucinations, and prompt drift.
+
+Explainable by construction, auditable end-to-end, self-improving.
+
 
 ### 📚 Money OS — a platform and course for beginners
 A simple, structured way to understand, manage, and start investing your money. Built for people with income but low clarity — especially women and first-time investors who feel locked out.
