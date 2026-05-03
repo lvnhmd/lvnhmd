@@ -1,4 +1,3 @@
-```markdown
 # Hi, I'm Elvin 👋
 
 I'm a Senior Software Engineer with 18 years building production systems in TypeScript, Node.js, and AWS — currently at Times Higher Education, previously at the BBC, Samsung, FIFA's official World Cup app, Nando's, and the UK Ministry of Justice.
